@@ -1,0 +1,13 @@
+#Drone CI File!
+#Commit Message: Drone! Captain Canary is here! 
+
+kind: pipeline
+type: kubernetes
+name: default
+
+steps:
+
+- name: build
+  image: maven:latest
+  commands:
+    - "mvn clean install"
