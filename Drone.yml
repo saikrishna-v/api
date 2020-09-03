@@ -3,8 +3,7 @@
 
 kind: pipeline
 type: kubernetes
-name: drone
-namespace: drone
+name: default
 
 steps:
 
