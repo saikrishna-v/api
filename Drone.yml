@@ -27,6 +27,8 @@ steps:
   image: maven:3.6-openjdk-8
   commands:
     - "mvn test -B"
+  depends_on:
+  - restore
 - name: rebuild
   image: plugins/s3-cache
   settings:
@@ -39,8 +41,6 @@ steps:
     rebuild: true
     mount:
       - m2
-    when:
-      event: push
   depends_on:
   - build
   - test
