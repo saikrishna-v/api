@@ -66,13 +66,3 @@ steps:
       mount:
         - 'target'
 
-volumes:
-  - name: cache
-    host:
-      path: /var/cache
-  - name: target
-    host:
-      path: /var/cache/${DRONE_REPO}/target
-  - name: m2
-    host:
-      path: /var/cache/${DRONE_REPO}/m2
