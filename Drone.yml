@@ -6,47 +6,21 @@ type: kubernetes
 name: default
 
 steps:
-- name: restore
-  image: plugins/s3-cache
-  settings:
-    pull: true
-    endpoint: http://minio.company.com
-    access_key:
-      from_secret: AWS_ID
-    secret_key:
-      from_secret: AWS_SECRET
-    restore: true
 - name: build
   image: maven:3.6-openjdk-8-slim
   commands:
     - "mvn -Dskiptests clean install"
     #- "mvn -DskipTests=true -Dmaven.javadoc.skip=true -B -V"
-  depends_on:
-  - restore
-- name: test
-  image: maven:3.6-openjdk-8
-  commands:
-    - "mvn test -B"
-  depends_on:
-  - restore
-- name: rebuild
-  image: plugins/s3-cache
-  settings:
-    pull: true
-    endpoint: https:infoworks.io
-    access_key:
-      from_secret: AWS_ID
-    secret_key:
-      from_secret: AWS_SECRET
-    rebuild: true
-    mount:
-      - m2
-  depends_on:
-  - build
-  - test
+  
+#- name: test
+#  image: maven:3.6-openjdk-8
+#  commands:
+#    - "mvn test -B"
 - name: Target
   image: busybox
   commands:
     - "ls -al -R target/*"
+    - "pwd"
+    - "find / -iname .m2"
   depends_on:
-  - rebuild
+  - build
