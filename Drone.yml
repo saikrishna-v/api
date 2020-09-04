@@ -10,7 +10,7 @@ steps:
   image: plugins/s3-cache
   settings:
     pull: true
-    endpoint: https://artifactory-cicd-drone.s3-us-west-2.amazonaws.com
+    endpoint: http://minio.company.com
     access_key:
       from_secret: AWS_ID
     secret_key:
