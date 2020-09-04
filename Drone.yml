@@ -69,4 +69,5 @@ steps:
       - ls -al target
       - ls -al /root
       - ls -al 
+      - sleep 1000
 
