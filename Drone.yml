@@ -11,6 +11,9 @@ steps:
   commands:
     - "mvn -Dskiptests clean install"
     #- "mvn -DskipTests=true -Dmaven.javadoc.skip=true -B -V"
+  volumes:
+    - name: m2
+      path: /root/.m2
   
 #- name: test
 #  image: maven:3.6-openjdk-8
@@ -26,3 +29,8 @@ steps:
     - "ls -al /root"
   depends_on:
   - build
+ 
+volumes:
+  - name: mypd
+    persistentVolumeClaim:
+      claimName: maven-repo-cache-cicd
