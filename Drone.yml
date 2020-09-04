@@ -33,4 +33,4 @@ steps:
 volumes:
   - name: mypd
     persistentVolumeClaim:
-      claimName: maven-repo-cache-cicd
+      claimName: gocd-cicd-agent
