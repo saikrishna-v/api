@@ -10,6 +10,7 @@ steps:
   image: plugins/s3-cache
   settings:
     pull: true
+    endpoint: https://artifactory-cicd-drone.s3-us-west-2.amazonaws.com
     access_key:
       from_secret: AWS_ID
     secret_key:
@@ -20,6 +21,8 @@ steps:
   commands:
     - "mvn -Dskiptests clean install"
     #- "mvn -DskipTests=true -Dmaven.javadoc.skip=true -B -V"
+  depends_on:
+  - restore
 - name: test
   image: maven:3.6-openjdk-8
   commands:
@@ -28,17 +31,22 @@ steps:
   image: plugins/s3-cache
   settings:
     pull: true
-    access_key: AWS_ID
-    secret_key: AWS_SECRET
+    endpoint: endpoint: https://artifactory-cicd-drone.s3-us-west-2.amazonaws.com
+    access_key:
+      from_secret: AWS_ID
+    secret_key:
+      from_secret: AWS_SECRET
     rebuild: true
     mount:
       - m2
     when:
       event: push
-- name: Target
-  image: busybox
-  commands:
-    - "ls -al"
   depends_on:
   - build
   - test
+- name: Target
+  image: busybox
+  commands:
+    - "ls -al -R target/*"
+  depends_on:
+  - rebuild
