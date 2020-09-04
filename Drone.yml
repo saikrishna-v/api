@@ -22,8 +22,7 @@ steps:
     - "ls -al target/"
     - "pwd"
     - "find / -iname repository"
-    - "ls -al ~/"
     - "ls -al /drone"
-    - "ls -al /"
+    - "ls -al /root"
   depends_on:
   - build
