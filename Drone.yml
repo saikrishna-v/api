@@ -13,8 +13,7 @@ globals:
       from_secret: AWS_SECRET
 
 steps:
-  - &cache_settings
-    name: restore-cache
+  - name: restore-cache
     image: drillster/drone-volume-cache
     environment:
       AWS_ACCESS_KEY_ID:
@@ -50,8 +49,7 @@ steps:
     volumes:
       - name: m2
         path: /root/.m2
-  - <<: *cache_settings
-    name: rebuild-cache
+  - name: rebuild-cache
     image: meltwater/drone-cache:dev
     pull: true
     environment:
