@@ -6,6 +6,15 @@ type: kubernetes
 name: default
 
 steps:
+- name: restore
+  image: plugins/s3-cache
+  settings:
+    pull: true
+    access_key:
+      from_secret: AWS_ID
+    secret_key:
+      from_secret: AWS_SECRET
+    restore: true
 - name: build
   image: maven:3.6-openjdk-8-slim
   commands:
@@ -15,7 +24,17 @@ steps:
   image: maven:3.6-openjdk-8
   commands:
     - "mvn test -B"
-    
+- name: rebuild
+  image: plugins/s3-cache
+  settings:
+    pull: true
+    access_key: AWS_ID
+    secret_key: AWS_SECRET
+    rebuild: true
+    mount:
+      - m2
+    when:
+      event: push
 - name: Target
   image: busybox
   commands:
