@@ -45,6 +45,7 @@ steps:
     commands:
       - "mvn -Dskiptests clean install"
       - ls ./target -la
+      - sleep 1000
       #- "mvn -DskipTests=true -Dmaven.javadoc.skip=true -B -V"
     volumes:
       - name: m2
@@ -69,5 +70,5 @@ steps:
       - ls -al target
       - ls -al /root
       - ls -al 
-      - sleep 1000
+      
 
