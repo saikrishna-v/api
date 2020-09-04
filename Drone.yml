@@ -63,7 +63,7 @@ steps:
       region: us-west-2
       mount:
         - 'target'
-  - name: prepare
+  - name: checkbox
     image: busybox
     commands:
       - ls -al target
