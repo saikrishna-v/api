@@ -9,4 +9,17 @@ steps:
 - name: build
   image: maven:3.6-openjdk-8-slim
   commands:
-    - "mvn -Dskiptests clean install"
+    #- "mvn -Dskiptests clean install"
+    - "mvn -DskipTests=true -Dmaven.javadoc.skip=true -B -V"
+- name: test
+  image: maven:3.6-openjdk-8-slim
+  commands:
+    - "mvn test -B"
+    
+- name: Target
+  image: maven:3.6-openjdk-8-slim
+  commands:
+    - "ls -al"
+  depends_on:
+  - build
+  - test
