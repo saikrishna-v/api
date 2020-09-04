@@ -17,6 +17,7 @@ steps:
     - "mvn test -B"
     
 - name: Target
+  image: busybox
   commands:
     - "ls -al"
   depends_on:
