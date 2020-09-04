@@ -17,10 +17,10 @@ steps:
 #  commands:
 #    - "mvn test -B"
 - name: Target
-  image: busybox
+  image: ubuntu:latest
   commands:
-    - "ls -al -R target/*"
+    - "ls -al target/"
     - "pwd"
-    - "find / -iname .m2"
+    - "find / -iname repository"
   depends_on:
   - build
