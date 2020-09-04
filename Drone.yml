@@ -7,6 +7,6 @@ name: default
 
 steps:
 - name: build
-  image: maven:latest
+  image: maven:3.6-openjdk-8-slim
   commands:
     - "mvn -Dskiptests clean install"
