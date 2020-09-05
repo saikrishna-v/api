@@ -40,6 +40,7 @@ steps:
   image: plugins/s3
   settings:
     bucket: artifactory-cicd-drone
+    region: us-west-2
     access_key:
       from_secret: AWS_ID
     secret_key:
