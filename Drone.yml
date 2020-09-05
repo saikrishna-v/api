@@ -12,7 +12,7 @@ steps:
   settings:
     pull: true
     endpoint: https://s3.us-west-2.amazonaws.com/artifactory-cicd-drone
-    path: api-targets/$DRONE_BUILD_NUMBER/targets/maven-cache.tar.gz
+    path: api-targets/$DRONE_BUILD_NUMBER/targets
     access_key:
       from_secret: AWS_ID
     secret_key: 
@@ -47,7 +47,7 @@ steps:
     secret_key:
       from_secret: AWS_SECRET
     source: target/*
-    target: api-targets/${DRONE_BUILD_NUMBER}/$$DRONE_BUILD_NUMBER
+    target: api-targets/${DRONE_BUILD_NUMBER}
  
  
 
