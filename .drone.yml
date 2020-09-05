@@ -1,11 +1,76 @@
+#Drone CI File!
+#Commit Message: Drone! Captain Canary is here! 
+
 kind: pipeline
 type: kubernetes
-name: default
+name: API
+
+globals:
+  - &AWS_AUTH
+    ID: 
+      from_secret: AWS_ID
+    SECRET:
+      from_secret: AWS_SECRET
 
 steps:
-- name: greeting
-  image: alpine
-  commands:
-  - echo hello
-  - echo world
-  - echo test
+  - name: restore-cache
+    image: drillster/drone-volume-cache
+    environment:
+      AWS_ACCESS_KEY_ID:
+        from_secret: AWS_ID
+      AWS_SECRET_ACCESS_KEY:
+        from_secret: AWS_SECRET
+    settings:
+      restore: true
+      bucket: artifactory-cicd-drone
+      region: us-west-2
+      mount:
+        - target
+    volumes:
+      - name: cache
+        path: /cache
+
+  - name: prepare
+    image: busybox
+    commands:
+      - mkdir -p /cache/${DRONE_REPO}/target
+      - mkdir -p /cache/${DRONE_REPO}/m2
+    volumes:
+      - name: cache
+        path: /cache
+        
+  - name: build
+    pull: default
+    image: maven:3.6-openjdk-8-slim
+    commands:
+      - "mvn -Dskiptests clean install"
+      - ls ./target -la
+      - ls -al /root
+      - ls -al /root/.m2
+      - ls -al .mvn
+      #- "mvn -DskipTests=true -Dmaven.javadoc.skip=true -B -V"
+    #volumes:
+    #  - name: m2
+    #    path: /root/.m2
+  - name: rebuild-cache
+    image: meltwater/drone-cache:dev
+    pull: true
+    environment:
+      AWS_ACCESS_KEY_ID:
+        from_secret: AWS_ID
+      AWS_SECRET_ACCESS_KEY:
+        from_secret: AWS_SECRET
+    settings:
+      rebuild: true
+      bucket: artifactory-cicd-drone
+      region: us-west-2
+      mount:
+        - 'target'
+  - name: checkbox
+    image: busybox
+    commands:
+      - ls -al target
+      - ls -al /root
+      - ls -al .mvn
+      
+
