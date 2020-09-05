@@ -13,8 +13,9 @@ globals:
       from_secret: AWS_SECRET
 
 steps:
-  - name: restore-cache
-    image: drillster/drone-volume-cache
+  - name: restore-cache-with-gzip
+    image: meltwater/drone-cache:dev
+    pull: true
     environment:
       AWS_ACCESS_KEY_ID:
         from_secret: AWS_ID
@@ -22,23 +23,12 @@ steps:
         from_secret: AWS_SECRET
     settings:
       restore: true
+      cache_key: "gzip"
+      archive_format: "gzip"
       bucket: artifactory-cicd-drone
       region: us-west-2
       mount:
-        - target
-    volumes:
-      - name: cache
-        path: /cache
-
-  - name: prepare
-    image: busybox
-    commands:
-      - mkdir -p /cache/${DRONE_REPO}/target
-      - mkdir -p /cache/${DRONE_REPO}/m2
-    volumes:
-      - name: cache
-        path: /cache
-        
+        - 'vendor'
   - name: build
     pull: default
     image: maven:3.6-openjdk-8-slim
@@ -48,11 +38,11 @@ steps:
       - ls -al /root
       - ls -al /root/.m2
       - ls -al .mvn
-      #- "mvn -DskipTests=true -Dmaven.javadoc.skip=true -B -V"
-    #volumes:
-    #  - name: m2
-    #    path: /root/.m2
-  - name: rebuild-cache
+      - ls -al 
+      - find / -iname vendor
+      - df -h
+    
+  - name: rebuild-cache-with-gzip
     image: meltwater/drone-cache:dev
     pull: true
     environment:
@@ -62,15 +52,19 @@ steps:
         from_secret: AWS_SECRET
     settings:
       rebuild: true
+      cache_key: "gzip"
+      archive_format: "gzip"
       bucket: artifactory-cicd-drone
       region: us-west-2
       mount:
-        - 'target'
+        - 'vendor'
+        
   - name: checkbox
     image: busybox
     commands:
       - ls -al target
       - ls -al /root
       - ls -al .mvn
-      
+      - ls -al 
+      - df -h
 
