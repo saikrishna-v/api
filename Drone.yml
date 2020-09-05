@@ -12,7 +12,7 @@ steps:
   settings:
     pull: true
     endpoint: https://s3.us-west-2.amazonaws.com/artifactory-cicd-drone
-    path: api-targets/$DRONE_BUILD_NUMBER/targets
+    path: api-targets/$DRONE_BUILD_NUMBER/target
     access_key:
       from_secret: AWS_ID
     secret_key: 
