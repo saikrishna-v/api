@@ -69,6 +69,6 @@ steps:
     commands:
       - ls -al target
       - ls -al /root
-      - ls -al 
+      - ls -al .mvn
       
 
