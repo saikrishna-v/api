@@ -12,6 +12,7 @@ steps:
   settings:
     pull: true
     endpoint: https://s3.us-west-2.amazonaws.com/artifactory-cicd-drone
+    path: api/
     access_key:
       from_secret: AWS_ID
     secret_key: 
@@ -31,6 +32,9 @@ steps:
     - ls -al ../
     - ls -al ~/
     - whoami
+  volumes:
+    - name: m2
+      path: /root/.m2
       
 - name: rebuild
   image: plugins/s3-cache
@@ -43,6 +47,7 @@ steps:
       from_secret: AWS_SECRET
     rebuild: true
     debug: true
+    path: api/
     mount:
       - /root/.m2
     
