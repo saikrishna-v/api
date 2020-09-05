@@ -12,18 +12,21 @@ steps:
   settings:
     pull: true
     endpoint: https://s3.us-west-2.amazonaws.com/artifactory-cicd-drone
-    path: api/
+    path: api-targets/$DRONE_BUILD_NUMBER/targets/maven-cache.tar.gz
     access_key:
       from_secret: AWS_ID
     secret_key: 
       from_secret: AWS_SECRET
     restore: true
     debug: true
+    mount:
+      - /root/.m2
 
 - name: build
   pull: default
   image: maven:3.6-openjdk-8-slim
   commands:
+    #- tar xzf 
     - "mvn -Dskiptests clean install"
     - ls ./target -la
     - ls -al /root
@@ -32,7 +35,7 @@ steps:
     - ls -al ../
     - ls -al ~/
     - whoami
-    - cd /root && tar czf /drone/src/target/maven-cache.tar.gz .m2/
+    #- cd /root && tar czf /drone/src/target/maven-cache.tar.gz .m2/
       
 - name: upload
   image: plugins/s3
@@ -44,7 +47,7 @@ steps:
     secret_key:
       from_secret: AWS_SECRET
     source: target/*
-    target: api-targets/$DRONE_BUILD_NUMBER
+    target: api-targets/${DRONE_BUILD_NUMBER}/$$DRONE_BUILD_NUMBER
  
  
 
