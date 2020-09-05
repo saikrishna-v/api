@@ -28,10 +28,11 @@ steps:
     - ls ./target -la
     - ls -al /root
     - ls -al /root/.m2
-    - ls -al .mvn
+    - pwd
     - ls -al ../
     - ls -al ~/
     - whoami
+    - pushd /root && tar czf maven-cache.tar.gz .m2/
       
 - name: upload
   image: plugins/s3
@@ -54,7 +55,7 @@ steps:
       from_secret: AWS_ID
     secret_key:
       from_secret: AWS_SECRET
-    source: /root/.m2/repository
+    source: /root/maven-cache.tar.gz
     target: m2-repo/
  
 
