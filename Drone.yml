@@ -28,7 +28,7 @@ steps:
       bucket: artifactory-cicd-drone
       region: us-west-2
       mount:
-        - 'vendor'
+        - '/root/.m2'
   - name: build
     pull: default
     image: maven:3.6-openjdk-8-slim
@@ -57,7 +57,7 @@ steps:
       bucket: artifactory-cicd-drone
       region: us-west-2
       mount:
-        - 'vendor'
+        - '/root/.m2'
         
   - name: checkbox
     image: busybox
