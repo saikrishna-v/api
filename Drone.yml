@@ -11,12 +11,13 @@ steps:
   image: plugins/s3-cache
   settings:
     pull: true
-    endpoint: http://minio.infoworks.io
+    endpoint: https://artifactory-cicd-drone.s3-us-west-2.amazonaws.com
     access_key:
       from_secret: AWS_ID
     secret_key: 
       from_secret: AWS_SECRET
     restore: true
+    debug: true
 
 - name: build
   pull: default
@@ -35,12 +36,13 @@ steps:
   image: plugins/s3-cache
   settings:
     pull: true
-    endpoint: http://minio.infoworks.io
+    endpoint: https://artifactory-cicd-drone.s3-us-west-2.amazonaws.com
     access_key:
       from_secret: AWS_ID
     secret_key: 
       from_secret: AWS_SECRET
     rebuild: true
+    debug: true
     mount:
       - /root/.m2
     
