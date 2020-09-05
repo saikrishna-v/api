@@ -49,9 +49,9 @@ steps:
       - ls -al /root/.m2
       - ls -al .mvn
       #- "mvn -DskipTests=true -Dmaven.javadoc.skip=true -B -V"
-    volumes:
-      - name: m2
-        path: /root/.m2
+    #volumes:
+    #  - name: m2
+    #    path: /root/.m2
   - name: rebuild-cache
     image: meltwater/drone-cache:dev
     pull: true
