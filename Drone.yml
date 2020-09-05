@@ -46,6 +46,7 @@ steps:
       - "mvn -Dskiptests clean install"
       - ls ./target -la
       - ls -al /root
+      - ls -al /root/.m2
       - ls -al .mvn
       #- "mvn -DskipTests=true -Dmaven.javadoc.skip=true -B -V"
     volumes:
