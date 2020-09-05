@@ -43,6 +43,8 @@ steps:
       - ls -al /root/.m2
       - ls -al .mvn
       - ls -al ../
+      - ls -al ~/
+      - whoami
     
   - name: rebuild-cache-with-gzip
     image: meltwater/drone-cache:dev
