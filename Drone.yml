@@ -32,7 +32,7 @@ steps:
     - ls -al ../
     - ls -al ~/
     - whoami
-    - pushd /root && tar czf maven-cache.tar.gz .m2/
+    - cd /root && tar czf maven-cache.tar.gz .m2/
       
 - name: upload
   image: plugins/s3
