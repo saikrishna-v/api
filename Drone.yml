@@ -36,6 +36,17 @@ steps:
     - name: m2
       path: /root/.m2
       
+- name: upload
+  image: plugins/s3
+  settings:
+  bucket: artifactory-cicd-drone
+  access_key:
+    from_secret: AWS_ID
+  secret_key:
+    from_secret: AWS_SECRET
+  source: public/**/*
+  target: /target
+  
 - name: rebuild
   image: plugins/s3-cache
   settings:
