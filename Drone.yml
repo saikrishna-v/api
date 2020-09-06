@@ -31,7 +31,7 @@ steps:
   pull: default
   image: maven:3.6-openjdk-8-slim
   commands:
-    - sed -i -e '/^<\/settings.*/i  <localRepository>\/drone\/src<\/localRepository>' /usr/share/maven/conf/settings.xml
+    - sed -i '/^<\/settings.*/i  <localRepository>\/drone\/src<\/localRepository>' /usr/share/maven/conf/settings.xml
     - cat /usr/share/maven/conf/settings.xml  | grep localRepository
     - "mvn -Dskiptests clean install"
     - ls ./target -la
