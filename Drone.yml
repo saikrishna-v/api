@@ -8,21 +8,6 @@ name: API
 
 steps:
 - name: restore-cache
-  image: meltwater/drone-cache:dev
-  environment:
-    AWS_ACCESS_KEY_ID:
-      from_secret: AWS_ID
-    AWS_SECRET_ACCESS_KEY:
-      from_secret: AWS_SECRET
-  pull: true
-  settings:
-    restore: true
-    bucket: artifactory-cicd-drone
-    region: us-west-2
-    mount:
-      - 'vendor'
-
-- name: restore-cache
   image: drillster/drone-volume-cache
   settings:
     restore: true
@@ -60,17 +45,17 @@ steps:
 
 
  
-- name: upload
-  image: plugins/s3
-  settings:
-    bucket: artifactory-cicd-drone
-    region: us-west-2
-    access_key:
-      from_secret: AWS_ID
-    secret_key:
-      from_secret: AWS_SECRET
-    source: target/*
-    target: api-targets/${DRONE_BUILD_NUMBER}
+#- name: upload
+#  image: plugins/s3
+#  settings:
+#    bucket: artifactory-cicd-drone
+#    region: us-west-2
+#    access_key:
+#      from_secret: AWS_ID
+#    secret_key:
+#      from_secret: AWS_SECRET
+#    source: target/*
+#    target: api-targets/${DRONE_BUILD_NUMBER}
     
 volumes:
 - name: cache
