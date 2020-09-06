@@ -7,20 +7,20 @@ name: API
 
 
 steps:
-- name: restore
-  image: plugins/s3-cache
-  settings:
-    pull: true
-    endpoint: https://s3.us-west-2.amazonaws.com/artifactory-cicd-drone
-    path: api-targets/$DRONE_BUILD_NUMBER/target
-    access_key:
+- name: restore-cache
+  image: meltwater/drone-cache:dev
+  environment:
+    AWS_ACCESS_KEY_ID:
       from_secret: AWS_ID
-    secret_key: 
+    AWS_SECRET_ACCESS_KEY:
       from_secret: AWS_SECRET
+  pull: true
+  settings:
     restore: true
-    debug: true
+    bucket: artifactory-cicd-drone
+    region: us-west-2
     mount:
-      - /root/.m2
+      - '/root/.m2'
 
 - name: build
   pull: default
@@ -36,7 +36,22 @@ steps:
     - ls -al ~/
     - whoami
     #- cd /root && tar czf /drone/src/target/maven-cache.tar.gz .m2/
-      
+    
+- name: rebuild-cache
+  image: meltwater/drone-cache:dev
+  pull: true
+  environment:
+    AWS_ACCESS_KEY_ID:
+      from_secret: AWS_ID
+    AWS_SECRET_ACCESS_KEY:
+      from_secret: AWS_SECRET
+  settings:
+    rebuild: true
+    bucket: artifactory-cicd-drone
+    region: us-west-2
+    mount:
+      - '/root/.m2'
+ 
 - name: upload
   image: plugins/s3
   settings:
@@ -48,24 +63,8 @@ steps:
       from_secret: AWS_SECRET
     source: target/*
     target: api-targets/${DRONE_BUILD_NUMBER}
- 
- 
 
-- name: rebuild
-  image: plugins/s3-cache
-  settings:
-    pull: true
-    endpoint: https://s3.us-west-2.amazonaws.com/artifactory-cicd-drone
-    access_key:
-      from_secret: AWS_ID
-    secret_key: 
-      from_secret: AWS_SECRET
-    rebuild: true
-    debug: true
-    path: api/
-    mount:
-      - /root/.m2
-    
+
 - name: checkbox
   image: busybox
   commands:
