@@ -36,7 +36,7 @@ steps:
     - ls -al /root
     - ls -al /root/.m2
     - pwd
-    - ls -al ../
+    - ls -al /
     - ls -al ~/
     - whoami
   volumes:
