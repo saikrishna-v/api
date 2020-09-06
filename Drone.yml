@@ -22,12 +22,15 @@ steps:
     mount:
       - 'vendor'
 
-- name: testcache
-  image: golang:1.11-alpine
-  pull: true
-  commands:
-    - apk add --update make git
-    - make drone-cache
+- name: restore-cache
+  image: drillster/drone-volume-cache
+  settings:
+    restore: true
+    mount:
+      - /root/.m2
+  volumes:
+  - name: cache
+    path: /cache
     
 - name: build
   pull: default
@@ -46,19 +49,16 @@ steps:
     #- cd /root && tar czf /drone/src/target/maven-cache.tar.gz .m2/
     
 - name: rebuild-cache
-  image: meltwater/drone-cache:dev
-  pull: true
-  environment:
-    AWS_ACCESS_KEY_ID:
-      from_secret: AWS_ID
-    AWS_SECRET_ACCESS_KEY:
-      from_secret: AWS_SECRET
+  image: drillster/drone-volume-cache
   settings:
     rebuild: true
-    bucket: artifactory-cicd-drone
-    region: us-west-2
     mount:
-      - 'vendor'
+      - /root/.m2
+  volumes:
+  - name: cache
+    path: /cache
+
+
  
 - name: upload
   image: plugins/s3
@@ -71,14 +71,8 @@ steps:
       from_secret: AWS_SECRET
     source: target/*
     target: api-targets/${DRONE_BUILD_NUMBER}
-
-
-- name: checkbox
-  image: busybox
-  commands:
-    - ls -al target
-    - ls -al /root
-    - ls -al .mvn
-    - ls -al 
-    - df -h
-
+    
+volumes:
+- name: cache
+  persistentVolumeClaim:
+    claimName: drone-cicd-efs-claim
