@@ -17,7 +17,7 @@ steps:
   volumes:
   - name: cache
     path: /cache
-    
+     
 - name: prepare
   image: busybox
   commands:
@@ -25,8 +25,8 @@ steps:
     - mkdir -p /cache/${DRONE_REPO}/m2
   volumes:
     - name: cache
-      path: /cache 
-      
+      path: /cache
+        
 - name: build
   pull: default
   image: maven:3.6-openjdk-8-slim
@@ -73,12 +73,12 @@ steps:
 #    target: api-targets/${DRONE_BUILD_NUMBER}
     
 volumes:
-- name: cache
-  persistentVolumeClaim:
-    claimName: drone-cicd-efs-claim
-- name: target
-  persistentVolumeClaim:
-    claimName: drone-cicd-efs-claim
-- name: m2
-  persistentVolumeClaim:
-    claimName: drone-cicd-efs-claim
+  - name: cache
+    host:
+      path: /var/cache
+  - name: target
+    host:
+      path: /var/cache/${DRONE_REPO}/target
+  - name: m2
+    host:
+      path: /var/cache/${DRONE_REPO}/m2
