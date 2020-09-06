@@ -22,12 +22,18 @@ steps:
     mount:
       - 'vendor'
 
+- name: testcache
+  image: golang:1.11-alpine
+  pull: true
+  commands:
+    - apk add --update make git
+    - make drone-cache
+    
 - name: build
   pull: default
   image: maven:3.6-openjdk-8-slim
   commands:
     #- tar xzf 
-    - apt install make git
     - make drone-cache
     - "mvn -Dskiptests clean install"
     - ls ./target -la
