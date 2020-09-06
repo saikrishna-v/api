@@ -81,5 +81,5 @@ volumes:
     host:
       path: /var/cache/${DRONE_REPO}/target
   - name: m2
-    host:
-      path: /var/cache/${DRONE_REPO}/m2
+    persistentVolumeClaim:
+      claimName: drone-cicd-efs-claim
