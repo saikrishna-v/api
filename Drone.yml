@@ -48,15 +48,15 @@ steps:
   settings:
     rebuild: true
 
-- name: rebuild-cache
-  image: drillster/drone-volume-cache
-  settings:
-    rebuild: true
-    mount:
+#- name: rebuild-cache
+#  image: drillster/drone-volume-cache
+#  settings:
+#    rebuild: true
+#    mount:
       - /root/.m2
-  volumes:
-  - name: cache
-    path: /cache
+#  volumes:
+#  - name: cache
+#    path: /cache
 
 
  
