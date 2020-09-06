@@ -53,7 +53,7 @@ steps:
 #  settings:
 #    rebuild: true
 #    mount:
-      - /root/.m2
+#      - /root/.m2
 #  volumes:
 #  - name: cache
 #    path: /cache
