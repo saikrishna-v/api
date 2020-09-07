@@ -9,22 +9,7 @@ workspace:
   path: /drone/src
 
 steps:
-- name: restore-cache
-  image: meltwater/drone-cache
-  environment:
-    AWS_ACCESS_KEY_ID:
-      from_secret: AWS_ID
-    AWS_SECRET_ACCESS_KEY:
-      from_secret: AWS_SECRET
-  pull: true
-  settings:
-    #restore: true
-    cache_key: {{ .Commit.Branch }}-{{ checksum "go.mod" }} # default if ommitted is {{ .Commit.Branch }}
-    bucket: artifactory-cicd-drone
-    region: us-west-2
-    endpoint: https://s3.us-west-2.amazonaws.com
-    mount:
-      - 'repository'
+
       
 - name: build
   pull: default
