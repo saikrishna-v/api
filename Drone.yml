@@ -21,8 +21,11 @@ steps:
 - name: prepare
   image: busybox
   commands:
+    - echo "Workspace is ${DRONE_WORKSPACE}"
+    - echo "CI Workspace is ${CI_WORKSPACE}"
     - mkdir -p /cache/${DRONE_REPO}/target
     - mkdir -p /cache/${DRONE_REPO}/m2
+    - mkdir -p /drone/src/
   volumes:
     - name: cache
       path: /cache
