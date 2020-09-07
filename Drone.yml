@@ -18,10 +18,11 @@ steps:
       from_secret: AWS_SECRET
   pull: true
   settings:
-    restore: true
+    #restore: true
     cache_key: {{ .Commit.Branch }}-{{ checksum "go.mod" }} # default if ommitted is {{ .Commit.Branch }}
     bucket: artifactory-cicd-drone
     region: us-west-2
+    endpoint: https://s3.us-west-2.amazonaws.com
     mount:
       - 'repository'
       
