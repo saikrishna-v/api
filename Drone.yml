@@ -41,7 +41,7 @@ steps:
     - "mvn -Dskiptests clean install"
     - ls ./target -la
     - ls -al 
-    - ls -al .m2
+    - ls -al repository
     - ls -al /root
     #- ls -al /root/.m2
     - pwd
