@@ -39,7 +39,7 @@ steps:
     mount:
       - repository
     rebuild: true
-    region: eu-west-1
+    region: us-west-2
     path_style: true
     endpoint: https://s3.us-west-2.amazonaws.com
     exit_code: true
