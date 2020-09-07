@@ -9,7 +9,25 @@ workspace:
   path: /drone/src
 
 steps:
-
+- name: rebuild-cache-with-gzip
+  image: meltwater/drone-cache:v1.1.0-rc1
+  pull: always
+  settings:
+    archive_format: gzip
+    bucket: artifactory-cicd-drone
+    cache_key: gzip
+    mount:
+      - repository
+    restore: true
+    region: us-west-2
+    path_style: true
+    endpoint: https://s3.us-west-2.amazonaws.com
+    exit_code: true
+  environment:
+    AWS_ACCESS_KEY_ID:
+      from_secret: AWS_ID
+    AWS_SECRET_ACCESS_KEY:
+      from_secret: AWS_SECRET
       
 - name: build
   pull: default
@@ -31,11 +49,13 @@ steps:
    # - name: m2
     #  path: /root/.m2
 
-- name: rebuild-cache
+- name: rebuild-cache-with-gzip
   image: meltwater/drone-cache:v1.1.0-rc1
   pull: always
   settings:
+    archive_format: gzip
     bucket: artifactory-cicd-drone
+    cache_key: gzip
     mount:
       - repository
     rebuild: true
