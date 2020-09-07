@@ -30,10 +30,10 @@ steps:
         
 - name: build
   pull: default
-  image: maven:3.6-openjdk-8-slim
+  image: 525918504241.dkr.ecr.us-west-2.amazonaws.com/saikrishna-api:latest
   commands:
     #- sed -i '/^<\/settings.*/i  <localRepository>\/drone\/src<\/localRepository>' /usr/share/maven/conf/settings.xml
-    - cat /usr/share/maven/conf/settings.xml  | grep localRepository
+    - cat /usr/share/maven/conf/settings.xml 
     - "mvn -Dskiptests clean install"
     - ls ./target -la
     - ls -al 
@@ -43,9 +43,9 @@ steps:
     - ls -al /
     - ls -al ~/
     - whoami
-  volumes:
-    - name: m2
-      path: /root/.m2
+  #volumes:
+   # - name: m2
+    #  path: /root/.m2
 
 - <<: *cache_settings
   name: rebuild-cache
