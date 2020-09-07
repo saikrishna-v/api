@@ -35,8 +35,9 @@ steps:
     - cat /usr/share/maven/conf/settings.xml  | grep localRepository
     - "mvn -Dskiptests clean install"
     - ls ./target -la
+    - ls -al 
     - ls -al /root
-    - ls -al /root/.m2
+    #- ls -al /root/.m2
     - pwd
     - ls -al /
     - ls -al ~/
