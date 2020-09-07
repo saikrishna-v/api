@@ -8,3 +8,4 @@
 <br>
 The README is in the [gh-pages](https://github.com/capitalone/Hygieia/blob/gh-pages/pages/hygieia/api/api.md) branch. Please update it there.
 
+[![Build Status](http://d537eec6-cicd-externaldron-3bb5-1189199422.us-west-2.elb.amazonaws.com/api/badges/saikrishna-v/api/status.svg)](http://d537eec6-cicd-externaldron-3bb5-1189199422.us-west-2.elb.amazonaws.com/saikrishna-v/api)
