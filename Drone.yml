@@ -27,14 +27,14 @@ steps:
     - echo "CI Workspace is ${CI_WORKSPACE}"
     - mkdir -p /cache/${DRONE_REPO}/target
     - mkdir -p /cache/${DRONE_REPO}/m2
-    - mkdir -p /drone/src/.m2
+    #- mkdir -p /drone/src/.m2
   volumes:
     - name: cache
       path: /cache
   
 - name: build
   pull: default
-  image: 525918504241.dkr.ecr.us-west-2.amazonaws.com/saikrishna-api:latest
+  image: 525918504241.dkr.ecr.us-west-2.amazonaws.com/saikrishna-apis:latest
   commands:
     #- sed -i '/^<\/settings.*/i  <localRepository>\/drone\/src<\/localRepository>' /usr/share/maven/conf/settings.xml
     - cat /usr/share/maven/conf/settings.xml 
