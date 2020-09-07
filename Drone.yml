@@ -9,29 +9,22 @@ workspace:
   path: /drone/src
 
 steps:
-- &cache_settings
-  name: restore-cache
-  image: drillster/drone-volume-cache
+- name: restore-cache
+  image: meltwater/drone-cache
+  environment:
+    AWS_ACCESS_KEY_ID:
+      from_secret: AWS_ID
+    AWS_SECRET_ACCESS_KEY:
+      from_secret: AWS_SECRET
+  pull: true
   settings:
     restore: true
+    cache_key: {{ .Commit.Branch }}-{{ checksum "go.mod" }} # default if ommitted is {{ .Commit.Branch }}
+    bucket: artifactory-cicd-drone
+    region: us-west-2
     mount:
-      - target
-  volumes:
-  - name: cache
-    path: /cache
-     
-- name: prepare
-  image: busybox
-  commands:
-    - echo "Workspace is ${DRONE_WORKSPACE}"
-    - echo "CI Workspace is ${CI_WORKSPACE}"
-    - mkdir -p /cache/${DRONE_REPO}/target
-    - mkdir -p /cache/${DRONE_REPO}/m2
-    #- mkdir -p /drone/src/.m2
-  volumes:
-    - name: cache
-      path: /cache
-  
+      - 'repository'
+      
 - name: build
   pull: default
   image: 525918504241.dkr.ecr.us-west-2.amazonaws.com/saikrishna-apis:latest
@@ -52,10 +45,23 @@ steps:
    # - name: m2
     #  path: /root/.m2
 
-- <<: *cache_settings
-  name: rebuild-cache
+- name: rebuild-cache
+  image: meltwater/drone-cache:v1.1.0-rc1
+  pull: always
   settings:
+    bucket: artifactory-cicd-drone
+    mount:
+      - repository
     rebuild: true
+    region: eu-west-1
+    path_style: true
+    endpoint: https://s3.us-west-2.amazonaws.com
+    exit_code: true
+  environment:
+    AWS_ACCESS_KEY_ID:
+      from_secret: AWS_ID
+    AWS_SECRET_ACCESS_KEY:
+      from_secret: AWS_SECRET
 
 #- name: rebuild-cache
 #  image: drillster/drone-volume-cache
@@ -82,13 +88,3 @@ steps:
 #    target: api-targets/${DRONE_BUILD_NUMBER}
    
    
-volumes:
-  - name: cache
-    host:
-      path: /var/cache
-  - name: target
-    host:
-      path: /var/cache/${DRONE_REPO}/target
-  - name: m2
-    persistentVolumeClaim:
-      claimName: drone-cicd-efs-claim
