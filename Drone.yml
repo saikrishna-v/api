@@ -26,6 +26,7 @@ steps:
   volumes:
     - name: cache
       path: /cache
+  workspace: new
         
 - name: build
   pull: default
