@@ -31,8 +31,7 @@ steps:
   volumes:
     - name: cache
       path: /cache
-  workspace: new
-        
+  
 - name: build
   pull: default
   image: 525918504241.dkr.ecr.us-west-2.amazonaws.com/saikrishna-api:latest
@@ -42,6 +41,7 @@ steps:
     - "mvn -Dskiptests clean install"
     - ls ./target -la
     - ls -al 
+    - ls -al .m2
     - ls -al /root
     #- ls -al /root/.m2
     - pwd
