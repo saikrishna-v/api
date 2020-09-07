@@ -9,7 +9,7 @@ workspace:
   path: /drone/src
 
 steps:
-- name: rebuild-cache-with-gzip
+- name: restore-cache-with-gzip
   image: meltwater/drone-cache:v1.1.0-rc1
   pull: always
   settings:
