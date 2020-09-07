@@ -5,6 +5,8 @@ kind: pipeline
 type: kubernetes
 name: API
 
+workspace:
+  path: /drone/src
 
 steps:
 - &cache_settings
@@ -25,7 +27,7 @@ steps:
     - echo "CI Workspace is ${CI_WORKSPACE}"
     - mkdir -p /cache/${DRONE_REPO}/target
     - mkdir -p /cache/${DRONE_REPO}/m2
-    - mkdir -p /drone/src/
+    - mkdir -p /drone/src/.m2
   volumes:
     - name: cache
       path: /cache
