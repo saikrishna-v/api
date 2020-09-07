@@ -22,7 +22,7 @@ steps:
     region: us-west-2
     path_style: true
     endpoint: https://s3.us-west-2.amazonaws.com
-    exit_code: false
+    exit_code: true
   environment:
     AWS_ACCESS_KEY_ID:
       from_secret: AWS_ID
